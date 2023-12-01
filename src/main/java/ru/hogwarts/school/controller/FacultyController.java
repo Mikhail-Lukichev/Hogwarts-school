@@ -53,7 +53,7 @@ public class FacultyController {
     public ResponseEntity<Faculty> delete(Long id) {
         Faculty foundFaculty = facultyService.get(id);
         if (foundFaculty == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         facultyService.delete(id);
         return ResponseEntity.ok(foundFaculty);

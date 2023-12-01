@@ -55,7 +55,7 @@ public class StudentController {
         Student foundStudent = studentService.get(id);
         if (foundStudent == null) {
 
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
         studentService.delete(id);
         return ResponseEntity.ok(foundStudent);
