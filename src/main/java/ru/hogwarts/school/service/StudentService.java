@@ -2,42 +2,37 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class StudentService {
-    private Map<Long, Student> students = new HashMap<>();
-    private Long idCount = 0L;
+    private final StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     public Student add(Student student) {
-        student.setId(idCount);
-        students.put(idCount,student);
-        idCount++;
-        return student;
+        return studentRepository.save(student);
     }
 
     public Student get(Long id) {
-        return students.get(id);
+        return studentRepository.findById(id).orElse(null);
     }
 
     public Collection<Student> getByAge(int age) {
-        return students.values()
-                .stream().
-                filter(s -> s.getAge() == age )
-                .collect(Collectors.toList());
+        return studentRepository.findByAge(age);
     }
 
     public Collection<Student> getAll() {
-        return students.values();
+        return studentRepository.findAll();
     }
 
     public Student update(Student student) {
-        if (students.containsKey(student.getId())) {
-            students.put(student.getId(),student);
+        if (studentRepository.existsById(student.getId())) {
+            studentRepository.save(student);
             return student;
         } else {
             return null;
@@ -45,9 +40,9 @@ public class StudentService {
     }
 
     public Student delete(Long id) {
-        if (students.containsKey(id)) {
-            Student returnStudent = students.get(id);
-            students.remove(id);
+        if (studentRepository.existsById(id)) {
+            Student returnStudent = studentRepository.findById(id).orElse(null);
+            studentRepository.deleteById(id);
             return returnStudent;
         } else {
             return null;

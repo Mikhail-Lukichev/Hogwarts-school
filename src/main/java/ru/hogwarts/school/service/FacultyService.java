@@ -2,44 +2,37 @@ package ru.hogwarts.school.service;
 
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 public class FacultyService {
-    private Map<Long, Faculty> faculties = new HashMap<>();
-    private Long idCount = 0L;
+    private FacultyRepository facultyRepository;
+
+    public FacultyService(FacultyRepository facultyRepository) {
+        this.facultyRepository = facultyRepository;
+    }
 
     public Faculty add(Faculty faculty) {
-        faculty.setId(idCount);
-        faculties.put(idCount,faculty);
-        idCount++;
-        return faculty;
+        return facultyRepository.save(faculty);
     }
 
     public Faculty get(Long id) {
-        return faculties.get(id);
+        return facultyRepository.findById(id).orElse(null);
     }
 
     public Collection<Faculty> getByColor(String color) {
-        return faculties.values()
-                .stream().
-                filter(f -> Objects.equals(f.getColor(), color))
-                .collect(Collectors.toList());
+        return facultyRepository.findByColor(color);
     }
 
     public Collection<Faculty> getAll() {
-        return faculties.values();
+        return facultyRepository.findAll();
     }
 
     public Faculty update(Faculty faculty) {
-        if (faculties.containsKey(faculty.getId())) {
-            faculties.put(faculty.getId(),faculty);
+        if (facultyRepository.existsById(faculty.getId())) {
+            facultyRepository.save(faculty);
             return faculty;
         } else {
             return null;
@@ -47,9 +40,9 @@ public class FacultyService {
     }
 
     public Faculty delete(Long id) {
-        if (faculties.containsKey(id)) {
-            Faculty returnFaculty = faculties.get(id);
-            faculties.remove(id);
+        if (facultyRepository.existsById(id)) {
+            Faculty returnFaculty = facultyRepository.findById(id).orElse(null);
+            facultyRepository.deleteById(id);
             return returnFaculty;
         } else {
             return null;
