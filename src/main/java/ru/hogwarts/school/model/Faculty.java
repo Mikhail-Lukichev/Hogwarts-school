@@ -7,8 +7,7 @@ import java.util.Set;
 @Entity
 public class Faculty {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private String color;
