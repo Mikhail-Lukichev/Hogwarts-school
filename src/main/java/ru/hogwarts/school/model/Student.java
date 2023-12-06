@@ -1,16 +1,21 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 @Entity
 public class Student {
     @Id
-//    @GeneratedValue(strategy = GenerationType.AUTO)
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
     private int age;
+
+    @ManyToOne
+    @JoinColumn(name="faculty_id")
+    @JsonIgnore
+    private Faculty faculty;
 
     public Faculty getFaculty() {
         return faculty;
@@ -19,10 +24,6 @@ public class Student {
     public void setFaculty(Faculty faculty) {
         this.faculty = faculty;
     }
-
-    @ManyToOne
-    @JoinColumn(name="faculty_id")
-    private Faculty faculty;
 
     public Long getId() {
         return id;
