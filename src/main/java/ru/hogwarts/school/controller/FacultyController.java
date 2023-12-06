@@ -4,7 +4,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
+import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
 
@@ -12,9 +14,11 @@ import java.util.Collection;
 @RequestMapping("faculty")
 public class FacultyController {
     private final FacultyService facultyService;
+    private final StudentService studentService;
 
-    public FacultyController(FacultyService facultyService) {
+    public FacultyController(FacultyService facultyService, StudentService studentService) {
         this.facultyService = facultyService;
+        this.studentService = studentService;
     }
 
     @GetMapping
@@ -30,9 +34,24 @@ public class FacultyController {
         }
         return ResponseEntity.ok(foundFaculty);
     }
-    @GetMapping("age/{color}")
-    public Collection<Faculty> getByAge(@PathVariable String color) {
+
+    @GetMapping("{id}/students")
+    public ResponseEntity<Collection<Student>>  getStudents(@PathVariable Long id) {
+        Faculty foundFaculty = facultyService.get(id);
+        if (foundFaculty == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok(studentService.getByFacultyId(id));
+    }
+
+    @GetMapping("color/{color}")
+    public Collection<Faculty> getByColor(@PathVariable String color) {
         return facultyService.getByColor(color);
+    }
+
+    @GetMapping("search/{search}")
+    public Collection<Faculty> getBySearchString(@PathVariable String search) {
+        return facultyService.getBySearchString(search);
     }
 
     @PostMapping
