@@ -1,5 +1,6 @@
 package ru.hogwarts.school.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 
@@ -13,6 +14,7 @@ public class Student {
 
     @ManyToOne
     @JoinColumn(name="faculty_id")
+    @JsonIgnore
     private Faculty faculty;
 
     public Faculty getFaculty() {
