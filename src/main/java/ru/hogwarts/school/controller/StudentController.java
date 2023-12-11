@@ -20,12 +20,14 @@ public class StudentController {
     }
 
     @GetMapping
+    @ResponseBody
     public Collection<Student> getAll() {
         return studentService.getAll();
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Student> get(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Student> get(@PathVariable("id") Long id) {
         Student foundStudent = studentService.get(id);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -33,8 +35,9 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
-    @GetMapping("{id}/faculty")
-    public ResponseEntity<Faculty> getFaculty(@PathVariable Long id) {
+    @GetMapping("/{id}/faculty")
+    @ResponseBody
+    public ResponseEntity<Faculty> getFaculty(@PathVariable("id") Long id) {
         Student foundStudent = studentService.get(id);
         if (foundStudent == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -42,12 +45,14 @@ public class StudentController {
         return ResponseEntity.ok(studentService.getFaculty(id));
     }
 
-    @GetMapping("age/{age}")
-    public Collection<Student> getByAge(@PathVariable int age) {
+    @GetMapping("/age/{age}")
+    @ResponseBody
+    public Collection<Student> getByAge(@PathVariable("age") int age) {
         return studentService.getByAge(age);
     }
-    @GetMapping("age/{minAge}/{maxAge}")
-    public Collection<Student> getByMinMaxAge(@PathVariable int minAge,@PathVariable int maxAge) {
+    @GetMapping("/age/{minAge}/{maxAge}")
+    @ResponseBody
+    public Collection<Student> getByMinMaxAge(@PathVariable("minAge") int minAge,@PathVariable("maxAge") int maxAge) {
         return studentService.getByMinMaxAge(minAge,maxAge);
     }
 
@@ -65,8 +70,8 @@ public class StudentController {
         return ResponseEntity.ok(student);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Student> delete(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Student> delete(@PathVariable("id")Long id) {
         Student foundStudent = studentService.get(id);
         if (foundStudent == null) {
 
