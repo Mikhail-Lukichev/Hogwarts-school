@@ -21,8 +21,8 @@ public class StudentController {
 
     @GetMapping
     @ResponseBody
-    public Collection<Student> getAll() {
-        return studentService.getAll();
+    public ResponseEntity<Collection<Student>> getAll() {
+        return ResponseEntity.ok(studentService.getAll());
     }
 
     @GetMapping("/{id}")
