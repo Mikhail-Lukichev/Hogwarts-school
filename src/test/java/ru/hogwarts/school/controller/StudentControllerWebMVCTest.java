@@ -37,6 +37,35 @@ class StudentControllerWebMVCTest {
     private StudentController studentController;
 
     @Test
+    void add() throws Exception {
+        //Data preparation
+        String name = "name";
+        int age = 20;
+        Student newStudent = new Student(name,age);
+
+        String request = objectMapper.writeValueAsString(newStudent);
+
+        //Expected data preparation
+        long id = 1L;
+        Student createdStudent = new Student(name,age);
+        createdStudent.setId(id);
+        when(studentService.add(any(Student.class))).thenReturn(createdStudent);
+
+        //Test execution
+        mockMvc.perform(
+                        MockMvcRequestBuilders
+                                .post("/student")
+                                .content(request)
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(name))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(age))
+                .andReturn();
+    }
+
+    @Test
     void getAll() throws Exception {
         //Data preparation
         String name = "name";
@@ -45,14 +74,10 @@ class StudentControllerWebMVCTest {
         //Expected data preparation
         long id1 = 1L;
         long id2 = 1L;
-        Student expectedStudent1 = new Student();
-        expectedStudent1.setName(name);
-        expectedStudent1.setAge(age);
+        Student expectedStudent1 = new Student(name,age);
         expectedStudent1.setId(id1);
 
-        Student expectedStudent2 = new Student();
-        expectedStudent2.setName(name);
-        expectedStudent2.setAge(age);
+        Student expectedStudent2 = new Student(name,age);
         expectedStudent2.setId(id2);
 
         Collection<Student> expectedStudentList = List.of(expectedStudent1, expectedStudent2);
@@ -81,9 +106,7 @@ class StudentControllerWebMVCTest {
 
         //Expected data preparation
         long id = 1L;
-        Student expectedStudent = new Student();
-        expectedStudent.setName(name);
-        expectedStudent.setAge(age);
+        Student expectedStudent = new Student(name,age);
         expectedStudent.setId(id);
         when(studentService.get(id)).thenReturn(expectedStudent);
 
@@ -106,9 +129,7 @@ class StudentControllerWebMVCTest {
 
         //Expected data preparation
         long id1 = 1L;
-        Student expectedStudent1 = new Student();
-        expectedStudent1.setName(name);
-        expectedStudent1.setAge(age);
+        Student expectedStudent1 = new Student(name,age);
         expectedStudent1.setId(id1);
 
         Collection<Student> expectedStudentList = List.of(expectedStudent1);
@@ -136,14 +157,10 @@ class StudentControllerWebMVCTest {
         //Expected data preparation
         long id1 = 1L;
         long id2 = 2L;
-        Student expectedStudent1 = new Student();
-        expectedStudent1.setName(name);
-        expectedStudent1.setAge(age1);
+        Student expectedStudent1 = new Student(name,age1);
         expectedStudent1.setId(id1);
 
-        Student expectedStudent2 = new Student();
-        expectedStudent2.setName(name);
-        expectedStudent2.setAge(age2);
+        Student expectedStudent2 = new Student(name,age2);
         expectedStudent2.setId(id2);
 
         Collection<Student> expectedStudentList = List.of(expectedStudent1, expectedStudent2);
@@ -164,38 +181,7 @@ class StudentControllerWebMVCTest {
                 .andReturn();
     }
 
-    @Test
-    void add() throws Exception {
-        //Data preparation
-        String name = "name";
-        int age = 20;
-        Student newStudent = new Student();
-        newStudent.setName(name);
-        newStudent.setAge(age);
 
-        String request = objectMapper.writeValueAsString(newStudent);
-
-        //Expected data preparation
-        long id = 1L;
-        Student createdStudent = new Student();
-        createdStudent.setName(name);
-        createdStudent.setAge(age);
-        createdStudent.setId(id);
-        when(studentService.add(any(Student.class))).thenReturn(createdStudent);
-
-        //Test execution
-        mockMvc.perform(
-                        MockMvcRequestBuilders
-                                .post("/student")
-                                .content(request)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.id").value(id))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.name").value(name))
-                .andExpect(MockMvcResultMatchers.jsonPath("$.age").value(age))
-                .andReturn();
-    }
 
     @Test
     void update() throws Exception {
@@ -203,17 +189,13 @@ class StudentControllerWebMVCTest {
         long id = 1L;
         String name = "name";
         int age = 20;
-        Student updateStudent = new Student();
+        Student updateStudent = new Student(name,age);
         updateStudent.setId(id);
-        updateStudent.setName(name);
-        updateStudent.setAge(age);
 
         String request = objectMapper.writeValueAsString(updateStudent);
 
         //Expected data preparation
-        Student updatedStudent = new Student();
-        updatedStudent.setName(name);
-        updatedStudent.setAge(age);
+        Student updatedStudent = new Student(name,age);
         updatedStudent.setId(id);
         when(studentService.update(any(Student.class))).thenReturn(updatedStudent);
 
@@ -239,9 +221,7 @@ class StudentControllerWebMVCTest {
 
         //Expected data preparation
         long id = 1L;
-        Student expectedStudent = new Student();
-        expectedStudent.setName(name);
-        expectedStudent.setAge(age);
+        Student expectedStudent = new Student(name,age);
         expectedStudent.setId(id);
         when(studentService.get(id)).thenReturn(expectedStudent);
 

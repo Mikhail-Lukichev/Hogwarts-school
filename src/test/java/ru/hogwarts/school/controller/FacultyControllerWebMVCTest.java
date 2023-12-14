@@ -46,14 +46,10 @@ class FacultyControllerWebMVCTest {
         //Expected data preparation
         long id1 = 1L;
         long id2 = 1L;
-        Faculty expectedFaculty1 = new Faculty();
-        expectedFaculty1.setName(name);
-        expectedFaculty1.setColor(color);
+        Faculty expectedFaculty1 = new Faculty(name,color);
         expectedFaculty1.setId(id1);
 
-        Faculty expectedFaculty2 = new Faculty();
-        expectedFaculty2.setName(name);
-        expectedFaculty2.setColor(color);
+        Faculty expectedFaculty2 = new Faculty(name,color);
         expectedFaculty2.setId(id2);
 
         Collection<Faculty> expectedFacultyList = List.of(expectedFaculty1, expectedFaculty2);
@@ -82,9 +78,7 @@ class FacultyControllerWebMVCTest {
 
         //Expected data preparation
         long id = 1L;
-        Faculty expectedFaculty = new Faculty();
-        expectedFaculty.setName(name);
-        expectedFaculty.setColor(color);
+        Faculty expectedFaculty = new Faculty(name,color);
         expectedFaculty.setId(id);
         when(facultyService.get(id)).thenReturn(expectedFaculty);
 
@@ -107,11 +101,8 @@ class FacultyControllerWebMVCTest {
 
         //Expected data preparation
         long id1 = 1L;
-        Faculty expectedFaculty1 = new Faculty();
-        expectedFaculty1.setName(name);
-        expectedFaculty1.setColor(color);
+        Faculty expectedFaculty1 = new Faculty(name,color);
         expectedFaculty1.setId(id1);
-
 
         Collection<Faculty> expectedFacultyList = List.of(expectedFaculty1);
 
@@ -136,11 +127,8 @@ class FacultyControllerWebMVCTest {
 
         //Expected data preparation
         long id1 = 1L;
-        Faculty expectedFaculty1 = new Faculty();
-        expectedFaculty1.setName(name);
-        expectedFaculty1.setColor(color);
+        Faculty expectedFaculty1 = new Faculty(name,color);
         expectedFaculty1.setId(id1);
-
 
         Collection<Faculty> expectedFacultyList = List.of(expectedFaculty1);
 
@@ -162,17 +150,13 @@ class FacultyControllerWebMVCTest {
         //Data preparation
         String name = "name";
         String color = "color";
-        Faculty newFaculty = new Faculty();
-        newFaculty.setName(name);
-        newFaculty.setColor(color);
+        Faculty newFaculty = new Faculty(name,color);
 
         String request = objectMapper.writeValueAsString(newFaculty);
 
         //Expected data preparation
         long id = 1L;
-        Faculty createdFaculty = new Faculty();
-        createdFaculty.setName(name);
-        createdFaculty.setColor(color);
+        Faculty createdFaculty = new Faculty(name,color);
         createdFaculty.setId(id);
         when(facultyService.add(any(Faculty.class))).thenReturn(createdFaculty);
 
@@ -196,17 +180,13 @@ class FacultyControllerWebMVCTest {
         long id = 1L;
         String name = "name";
         String color = "color";
-        Faculty updateFaculty = new Faculty();
+        Faculty updateFaculty = new Faculty(name,color);
         updateFaculty.setId(id);
-        updateFaculty.setName(name);
-        updateFaculty.setColor(color);
 
         String request = objectMapper.writeValueAsString(updateFaculty);
 
         //Expected data preparation
-        Faculty updatedFaculty = new Faculty();
-        updatedFaculty.setName(name);
-        updatedFaculty.setColor(color);
+        Faculty updatedFaculty = new Faculty(name,color);
         updatedFaculty.setId(id);
         when(facultyService.update(any(Faculty.class))).thenReturn(updatedFaculty);
 
@@ -232,9 +212,7 @@ class FacultyControllerWebMVCTest {
 
         //Expected data preparation
         long id = 1L;
-        Faculty expectedFaculty = new Faculty();
-        expectedFaculty.setName(name);
-        expectedFaculty.setColor(color);
+        Faculty expectedFaculty = new Faculty(name,color);
         expectedFaculty.setId(id);
         when(facultyService.get(id)).thenReturn(expectedFaculty);
 

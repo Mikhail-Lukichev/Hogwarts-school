@@ -25,22 +25,29 @@ class FacultyControllerRestTemplateTest {
     private TestRestTemplate restTemplate;
 
     @Test
+    void add() {
+        //Data preparation
+        Faculty newFaculty = new Faculty("name","color");
+
+        //Expected result preparation
+        Faculty expectedResult = new Faculty("name","color");
+        expectedResult.setId(1L);
+
+        //Test execution
+        Faculty actualResult = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
+        assertEquals(expectedResult, actualResult);
+    }
+
+    @Test
     void getAll() {
         //Data preparation
-        Faculty newFaculty1 = new Faculty();
-        newFaculty1.setId(1L);
-        newFaculty1.setName("name1");
-        newFaculty1.setColor("color1");
-
-        Faculty newFaculty2 = new Faculty();
-        newFaculty2.setId(2L);
-        newFaculty2.setName("name2");
-        newFaculty2.setColor("color2");
+        Faculty newFaculty1 = new Faculty("name1","color1");
+        Faculty newFaculty2 = new Faculty("name2","color2");
 
         //Expected result preparation
         Faculty postedFaculty1 = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty1, Faculty.class);
         Faculty postedFaculty2 = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty2, Faculty.class);
-        List<Faculty> expectedResult = List.of(newFaculty1,newFaculty2);
+        List<Faculty> expectedResult = List.of(postedFaculty1,postedFaculty2);
 
         //Test execution
         ResponseEntity<Faculty[]> response = this.restTemplate.getForEntity("http://localhost:" + port + "/faculty", Faculty[].class);
@@ -51,10 +58,7 @@ class FacultyControllerRestTemplateTest {
     @Test
     void get() {
         //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
+        Faculty newFaculty = new Faculty("name","color");
 
         //Expected result preparation
         Faculty postedFaculty = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
@@ -68,10 +72,7 @@ class FacultyControllerRestTemplateTest {
     @Test
     void getByColor() {
         //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
+        Faculty newFaculty = new Faculty("name","getByColor");
 
         //Expected result preparation
         Faculty postedFaculty = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
@@ -87,10 +88,7 @@ class FacultyControllerRestTemplateTest {
     @Test
     void getBySearchString() {
         //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
+        Faculty newFaculty = new Faculty("name","getBySearchString");
 
         //Expected result preparation
         Faculty postedFaculty = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
@@ -104,35 +102,11 @@ class FacultyControllerRestTemplateTest {
     }
 
     @Test
-    void add() {
-        //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
-
-        //Expected result preparation
-        Faculty expectedResult = new Faculty();
-        expectedResult.setId(1L);
-        expectedResult.setName("name");
-        expectedResult.setColor("color");
-
-        //Test execution
-        Faculty actualResult = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
-        assertEquals(expectedResult, actualResult);
-    }
-
-    @Test
     void update() {
         //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
+        Faculty newFaculty = new Faculty("name","color");
 
-        Faculty updatedFaculty = new Faculty();
-        updatedFaculty.setName("newName");
-        updatedFaculty.setColor("newColor");
+        Faculty updatedFaculty = new Faculty("newName","newColor");
 
         //Expected result preparation
         Faculty postedFaculty = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);
@@ -148,10 +122,7 @@ class FacultyControllerRestTemplateTest {
     @Test
     void delete() {
         //Data preparation
-        Faculty newFaculty = new Faculty();
-        newFaculty.setId(1L);
-        newFaculty.setName("name");
-        newFaculty.setColor("color");
+        Faculty newFaculty = new Faculty("name","color");
 
         //Expected result preparation
         Faculty postedFaculty = this.restTemplate.postForObject("http://localhost:" + port + "/faculty", newFaculty, Faculty.class);

@@ -16,6 +16,16 @@ public class Faculty {
     @OneToMany(mappedBy = "faculty")
     private Set<Student> students;
 
+    public Faculty() {
+    }
+
+    public Faculty(String name, String color) {
+        this.id = id;
+        this.name = name;
+        this.color = color;
+        this.students = students;
+    }
+
     public Long getId() {
         return id;
     }

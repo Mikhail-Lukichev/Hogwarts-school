@@ -19,6 +19,16 @@ public class Student {
     @JsonIgnore
     private Faculty faculty;
 
+    public Student() {
+    }
+
+    public Student(String name, int age) {
+        this.id = id;
+        this.name = name;
+        this.age = age;
+        this.faculty = faculty;
+    }
+
     public Faculty getFaculty() {
         return faculty;
     }
