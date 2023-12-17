@@ -9,6 +9,7 @@ import ru.hogwarts.school.service.FacultyService;
 import ru.hogwarts.school.service.StudentService;
 
 import java.util.Collection;
+import java.util.List;
 
 @RestController
 @RequestMapping("faculty")
@@ -22,12 +23,13 @@ public class FacultyController {
     }
 
     @GetMapping
-    public Collection<Faculty> getAll() {
-        return facultyService.getAll();
+    public ResponseEntity<Collection<Faculty>> getAll() {
+        return ResponseEntity.ok(facultyService.getAll());
     }
 
-    @GetMapping("{id}")
-    public ResponseEntity<Faculty> get(@PathVariable Long id) {
+    @GetMapping("/{id}")
+    @ResponseBody
+    public ResponseEntity<Faculty> get(@PathVariable("id") Long id) {
         Faculty foundFaculty = facultyService.get(id);
         if (foundFaculty == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -35,8 +37,9 @@ public class FacultyController {
         return ResponseEntity.ok(foundFaculty);
     }
 
-    @GetMapping("{id}/students")
-    public ResponseEntity<Collection<Student>>  getStudents(@PathVariable Long id) {
+    @GetMapping("/{id}/students")
+    @ResponseBody
+    public ResponseEntity<Collection<Student>>  getStudents(@PathVariable("id") Long id) {
         Faculty foundFaculty = facultyService.get(id);
         if (foundFaculty == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -44,13 +47,15 @@ public class FacultyController {
         return ResponseEntity.ok(studentService.getByFacultyId(id));
     }
 
-    @GetMapping("color/{color}")
-    public Collection<Faculty> getByColor(@PathVariable String color) {
+    @GetMapping("/color/{color}")
+    @ResponseBody
+    public Collection<Faculty> getByColor(@PathVariable("color") String color) {
         return facultyService.getByColor(color);
     }
 
-    @GetMapping("search/{search}")
-    public Collection<Faculty> getBySearchString(@PathVariable String search) {
+    @GetMapping("/search/{search}")
+    @ResponseBody
+    public Collection<Faculty> getBySearchString(@PathVariable("search") String search) {
         return facultyService.getBySearchString(search);
     }
 
@@ -68,8 +73,8 @@ public class FacultyController {
         return ResponseEntity.ok(faculty);
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity<Faculty> delete(Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Faculty> delete(@PathVariable("id") Long id) {
         Faculty foundFaculty = facultyService.get(id);
         if (foundFaculty == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

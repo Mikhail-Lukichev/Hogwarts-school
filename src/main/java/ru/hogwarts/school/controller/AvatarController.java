@@ -27,13 +27,14 @@ public class AvatarController {
     }
 
     @PostMapping(value = "/{id}/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> uploadAvatar(@PathVariable Long id, @RequestParam MultipartFile avatar) throws IOException {
+    public ResponseEntity<String> uploadAvatar(@PathVariable("id") Long id, @RequestParam MultipartFile avatar) throws IOException {
         avatarService.uploadAvatar(id, avatar);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("/{id}/avatar/db")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id) {
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable("id") Long id) {
         Avatar avatar = avatarService.findAvatarByStudentId(id);
         if (avatar.getId() == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -47,7 +48,8 @@ public class AvatarController {
     }
 
     @GetMapping("/{id}/avatar/file")
-    public ResponseEntity<byte[]> downloadAvatar(@PathVariable Long id, HttpServletResponse response) throws IOException {
+    @ResponseBody
+    public ResponseEntity<byte[]> downloadAvatar(@PathVariable("id") Long id, HttpServletResponse response) throws IOException {
         Avatar avatar = avatarService.findAvatarByStudentId(id);
         if (avatar.getId() == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
