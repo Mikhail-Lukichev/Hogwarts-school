@@ -63,4 +63,16 @@ public class StudentService {
             return null;
         }
     }
+
+    public Integer count() {
+        return studentRepository.getCount();
+    }
+
+    public Double getAverageAge() {
+        return studentRepository.getAverageAge();
+    }
+
+    public Collection<Student> getLastFiveStudents() {
+        return studentRepository.getLastFive();
+    }
 }
