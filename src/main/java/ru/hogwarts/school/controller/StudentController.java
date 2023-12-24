@@ -35,6 +35,18 @@ public class StudentController {
         return ResponseEntity.ok(foundStudent);
     }
 
+    @GetMapping("/nameStartsWithA")
+    @ResponseBody
+    public ResponseEntity<Collection<Student>> getWithNameStartA() {
+        return ResponseEntity.ok(studentService.getWithNameStartA());
+    }
+
+    @GetMapping("/averageAgeStream")
+    @ResponseBody
+    public ResponseEntity<Double> getAverageAgeStream() {
+        return ResponseEntity.ok(studentService.getAverageAgeStream());
+    }
+
     @GetMapping("/count")
     @ResponseBody
     public ResponseEntity<Integer> countStudents() {

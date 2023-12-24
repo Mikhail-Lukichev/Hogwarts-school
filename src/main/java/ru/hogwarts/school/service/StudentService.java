@@ -6,8 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.StudentRepository;
-
 import java.util.Collection;
+import java.util.Comparator;
+import java.util.List;
 
 @Service
 public class StudentService {
@@ -148,5 +149,32 @@ public class StudentService {
         logger.info("Call " + className + " " + methodName);
 
         return studentRepository.getLastFive();
+    }
+
+    public Collection<Student> getWithNameStartA() {
+        String className = this.getClass().getSimpleName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+        logger.info("Call " + className + " " + methodName);
+
+        Comparator<Student> nameComparator = (s1,s2) -> s1.getName().compareTo(s2.getName());
+        return studentRepository.findAll().stream()
+                .filter(student -> student.getName().startsWith("A"))
+                .sorted(nameComparator)
+                .peek(student -> student.setName(student.getName().toUpperCase()))
+                .toList();
+    }
+
+    public Double getAverageAgeStream() {
+        String className = this.getClass().getSimpleName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+        logger.info("Call " + className + " " + methodName);
+
+        List<Student> students = studentRepository.findAll();
+        Double sumAge = students.stream().mapToDouble(Student::getAge).sum();
+        Long count = (long) students.size();
+
+        return sumAge / count;
     }
 }

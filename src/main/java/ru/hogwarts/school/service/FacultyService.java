@@ -4,11 +4,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.hogwarts.school.model.Faculty;
-import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.repository.FacultyRepository;
 
 import java.util.Collection;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Optional;
 
 @Service
 public class FacultyService {
@@ -98,5 +98,16 @@ public class FacultyService {
             logger.warn("Faculty with id {} is not found. Cannot delete the faculty", id);
             return null;
         }
+    }
+
+    public String getLongestName() {
+        String className = this.getClass().getSimpleName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+        logger.info("Call " + className + " " + methodName);
+
+        Comparator<Faculty> nameComparator = (f1, f2) -> f1.getName().compareTo(f2.getName());
+        Optional<Faculty> output = facultyRepository.findAll().stream().max(nameComparator);
+        return output.map(Faculty::getName).orElse(null);
     }
 }
