@@ -16,6 +16,8 @@ public class StudentService {
 
     private final StudentRepository studentRepository;
 
+    private Object flag = new Object();
+
     public StudentService(StudentRepository studentRepository) {
         this.studentRepository = studentRepository;
     }
@@ -177,4 +179,77 @@ public class StudentService {
 
         return sumAge / count;
     }
+
+    public void printParallelStreams() {
+        String className = this.getClass().getSimpleName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+        logger.info("Call " + className + " " + methodName);
+
+        List<Student> students = List.of(
+                new Student("Student 1", 20),
+                new Student("Student 2", 20),
+                new Student("Student 3", 20),
+                new Student("Student 4", 20),
+                new Student("Student 5", 20),
+                new Student("Student 6", 20)
+        );
+
+        printStudentName(students, 0);
+        printStudentName(students, 1);
+
+        new Thread(() -> {
+            printStudentName(students, 2);
+            printStudentName(students, 3);
+        }
+        ).start();
+
+        new Thread(() -> {
+            printStudentName(students, 4);
+            printStudentName(students, 5);
+        }
+        ).start();
+    }
+
+    private void printStudentName(List<Student> students, int index) {
+        System.out.println(students.get(index).getName());
+    }
+
+    public void printSynchronizedStreams() {
+        String className = this.getClass().getSimpleName();
+        String methodName = new Object() {
+        }.getClass().getEnclosingMethod().getName();
+        logger.info("Call " + className + " " + methodName);
+
+        List<Student> students = List.of(
+                new Student("Student 1", 20),
+                new Student("Student 2", 20),
+                new Student("Student 3", 20),
+                new Student("Student 4", 20),
+                new Student("Student 5", 20),
+                new Student("Student 6", 20)
+        );
+
+        printStudentNameSynchronized(students, 0);
+        printStudentNameSynchronized(students, 1);
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students, 2);
+            printStudentNameSynchronized(students, 3);
+        }
+        ).start();
+
+        new Thread(() -> {
+            printStudentNameSynchronized(students, 4);
+            printStudentNameSynchronized(students, 5);
+        }
+        ).start();
+    }
+
+    private void printStudentNameSynchronized(List<Student> students, int index) {
+        synchronized(flag) {
+            System.out.println(students.get(index).getName());
+        }
+    }
+
 }
