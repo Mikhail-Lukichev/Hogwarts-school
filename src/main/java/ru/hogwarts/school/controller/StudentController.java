@@ -110,4 +110,16 @@ public class StudentController {
         studentService.delete(id);
         return ResponseEntity.ok(foundStudent);
     }
+
+    @GetMapping("/print-parallel")
+    @ResponseBody
+    public void printParallelStreams() {
+        studentService.printParallelStreams();
+    }
+
+    @GetMapping("/print-synchronized")
+    @ResponseBody
+    public void printSynchronizedStreams() {
+        studentService.printSynchronizedStreams();
+    }
 }
